@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('css/mdb.min.css') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link href="{{ asset('css/base.css') }}" rel="stylesheet"/>
+    {% endblock %}
+
+</head>
+<body>
+
+<header>
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark unique-color-dark">
+
+        <!-- Additional container -->
+        <div class="container">
+
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="{{ path('welcome') }}">
+                <i class="fa fa-home fa-lg"></i> Application</a>
+
+            <!-- Collapse button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="basicExampleNav">
+
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('homepage',{'page':1}) }} "><i class="fa fa-users"></i> Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('profil_user') }}"><i class="fa fa-user"></i> Profil user</a>
+                    </li>
+                    {% if not is_granted('ROLE_USER') %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{ path('create_user') }}">Sign up</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('topics',{'page':1}) }}">Topics</a>
+                    </li>
+
+                </ul>
+                <!-- Links -->
+
+                {% if is_granted('ROLE_USER') %}
+                    <img class="card-img-100 card-img-64" src="{{ asset('uploads/photos/') }}{{ app.user.image }}"
+                         alt="" style="width:30px;height: 30px;border-radius: 50%;">
+                    <span style="color:white;"> &nbsp;&nbsp;Logged as {{ app.user.username }}
+                        ! &nbsp;&nbsp;&nbsp;</span>
+                    <a href="{{ path('app_logout') }}" class="btn btn-md btn-unique"> Log out</a>
+
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-md btn-unique">Log in</a>
+                {% endif %}
+
+            </div>
+            <!-- Collapsible content -->
+
+        </div>
+        <!-- Additional container -->
+
+    </nav>
+    <!--/.Navbar-->
+
+</header>
+
+<main>
+    <div class="example-wrapper container">
+        {% block body %}{% endblock %}
+
+
+    </div>
+</main>
+
+
+<!-- Footer -->
+<footer class="page-footer font-small grey darken-2 pt-4 mt-4">
+
+    <!-- Footer Links -->
+    <div class="container-fluid text-center text-md-left">
+
+        <!-- Grid row -->
+        <div class="row">
+
+            <!-- Grid column -->
+            <div class="col-md-6 mt-md-0 mt-3">
+
+                <!-- Content -->
+                <h5 class="text-uppercase">Footer Content</h5>
+                <p>Here you can use rows and columns here to organize your footer content.</p>
+
+            </div>
+            <!-- Grid column -->
+
+            <hr class="clearfix w-100 d-md-none pb-3">
+
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+
+                <!-- Links -->
+                <h5 class="text-uppercase">Links</h5>
+
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#!">Link 1</a>
+                    </li>
+                    <li>
+                        <a href="#!">Link 2</a>
+                    </li>
+                    <li>
+                        <a href="#!">Link 3</a>
+                    </li>
+                    <li>
+                        <a href="#!">Link 4</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+
+                <!-- Links -->
+                <h5 class="text-uppercase">Links</h5>
+
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#!">Link 1</a>
+                    </li>
+                    <li>
+                        <a href="#!">Link 2</a>
+                    </li>
+                    <li>
+                        <a href="#!">Link 3</a>
+                    </li>
+                    <li>
+                        <a href="#!">Link 4</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+    </div>
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright: <b>Mihary Raharitsiresy</b>
+    </div>
+    <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="{{ asset('js/mdb.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace membre{% endblock %}
+
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .table{
+            box-shadow: 3px 3px 3px 2px lightgray;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        {#<div class="col-md-1"></div>#}
+
+        <div class="col-md-12">
+            <h4>All users</h4>
+            {#<img class="card-img-100 card-img-64" src="{{ asset('uploads/photos/') }}{{ app.user.image }}" alt="" style="width:40px;height: 40px;border-radius: 50%;">#}
+
+            <table class="table" id="table_users">
+                <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Postal Code</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Country</th>
+                    {#<th scope="col">Photo</th>#}
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>
+                        <img class="card-img-100 card-img-64" src="{{ asset('uploads/photos/') }}{{ user.image }}"
+                             alt="" style="width:30px;height: 30px;border-radius: 50%;">
+                    </td>
+                    {#<td>{{ user.id }}</td>#}
+                    <td scope="row">
+                        {{ user.pseudo }}
+                    </td>
+                    <td>{{ user.prenom }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.adresse }}</td>
+                    <td>{{ user.age }} ans</td>
+                    <td>101</td>
+                    <td>{{ user.ville }}</td>
+                    <td>{{ user.pays }}</td>
+                    {#<td>#}
+                        {#<img class="card-img-100 card-img-64" src="{{ asset('uploads/photos/') }}{{ user.image }}" alt="" style="width:40px;height: 40px;border-radius: 50%;">#}
+                    {#</td>#}
+                </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="row">
+            {% if pagination.nbPages > 0 %}
+                <ul class="pagination pagination-circle>
+                        {% if pagination.page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': 1})) }}">
+                                    <i class="fa fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path(pagination.nomRoute,
+                                    pagination.paramsRoute|merge({'page': pagination.page-1})) }}">
+                                    &nbsp; <i class="fa fa-angle-left"></i> &nbsp;
+                                </a>
+                            </li>
+                        {% endif %}
+
+                {# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nbPages #}
+                {% for p in range(max(pagination.page-4, 1), min(pagination.page+4, pagination.nbPages)) %}
+                    <li {% if p == pagination.page %}class="active"{% endif %} class="page-item">
+                        <a class="page-link"
+                           href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': p})) }}">
+                            {{ p }}
+                        </a>
+                    </li>
+                {% endfor %}
+
+                {% if pagination.page < pagination.nbPages %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(pagination.nomRoute,
+                            pagination.paramsRoute|merge({'page': pagination.page+1})) }}">
+                            &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(pagination.nomRoute,
+                            pagination.paramsRoute|merge({'page': pagination.nbPages})) }}">
+                            <i class="fa fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    {#<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>#}
+    <script src="{{ asset('js/jquery.tabledit.min.js') }}"></script>
+    <script src="{{ asset('js/accueil.js') }}"></script>
+
+{% endblock %}

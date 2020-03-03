@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+
+        <div class="col-md-12">
+            <!--Grid row-->
+            <div class="row container">
+
+                <!--Grid column-->
+                <div class="col-lg-2 col-md-4 col-sm-6">
+
+                    <!--Card-->
+                    <div class="card">
+
+                        <!--Card image-->
+                        <div class="view overlay">
+                            <img src="{{ asset('uploads/photos/') }}{{ app.user.image }}"
+                                 class="z-depth-1 mx-auto img-fluid"
+                                 alt="" id="picture_profil">
+                        </div>
+
+                        <div class="card-body">
+                            <input type="file" id="input_new_picture" name="file" />
+                            <button id="btn_picture" class="btn btn-unique btn-sm">New picture</button>
+
+                        </div>
+
+
+                    </div>
+                    <!--/.Card-->
+
+                    <ul class="list-group mt-2">
+
+                        <h5 class="mx-2 mt-3">My topics</h5>
+                        {% for topic in app.user.topics|reverse  %}
+                        <li class="list-group-item">
+                            <a href="#">{{ topic.titre|slice(0, 30) ~ '...' }}</a>
+                        </li>
+                        {% endfor %}
+
+
+                    </ul>
+
+                </div>
+                <!--Grid column-->
+
+                <div class="col-lg-10 col-md-8">
+
+                    <div class="card my-3">
+                        <div class="card-body">
+                            <div class="mx-1">
+                                <h4 class="card-title"><a>Hello {{ app.user.pseudo }} !</a></h4>
+                                {% for message in app.flashes('success') %}
+                                    <div class="alert alert-success">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                                {{ form_start(form) }}
+                                {{ form_row(form.titre) }}
+                                {{ form_row(form.send,{ 'attr' : { 'class': 'btn btn-sm white-text green pull-right' }}) }}
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                    <caption>User information</caption>
+                                    <table class="table" id="table_info_name_user">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">Last Name</th>
+                                            <th scope="col">Birthday</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>{{ app.user.id }}</td>
+                                            <td>{{ app.user.pseudo }}</td>
+                                            <td>{{ app.user.prenom }}</td>
+                                            <td>{{ app.user.nom }}</td>
+                                            <td>{{ app.user.DateDeNaissance|date("Y-m-d") }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-md-12">
+
+                                    <caption>User Address information</caption>
+                                    <table class="table" id="table_info_address_user">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th scope="col">Address</th>
+                                            <th scope="col">Postal Code</th>
+                                            <th scope="col">City</th>
+                                            <th scope="col">Country</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>{{ app.user.id }}</td>
+                                            <td>{{ app.user.adresse }}</td>
+                                            <td>{{ app.user.codepostal }}</td>
+                                            <td>{{ app.user.ville }}</td>
+                                            <td>{{ app.user.pays }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery.tabledit.min.js') }}"></script>
+    <script src="{{ asset('js/profil.js') }}"></script>
+{% endblock %}

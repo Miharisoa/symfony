@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="example-wrapper container">
+
+    <main class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 card">
+            <h1>{{ message }}</h1>
+            {{ form_start(form_login) }}
+                {{ form_row(form_login.pseudo) }}
+                {{ form_row(form_login.mdp) }}
+                {{ form_row(form_login.submit) }}
+            {{ form_end(form_login) }}
+        </div>
+    </main>
+</div>
+{% endblock %}

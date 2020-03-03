@@ -1,0 +1,49 @@
+main{
+    padding-top:20px;
+}
+main>div.col-md-4{
+    padding-bottom: 20px;
+    padding-top:20px;
+}
+
+.card,.table{
+    /*box-shadow: 3px 3px 3px 2px lightgray;*/
+}
+
+.green{
+    background-color: #718C00;
+}
+
+.blue{
+    background-color:saddlebrown;
+}
+
+.grey{
+    background-color: #222222;
+}
+
+.text-white{
+    color: white;
+}
+
+.tabledit-edit-button.btn.grey.btn-edit,.btn-save{
+    width:25px;
+    height:25px;
+    padding: 0px;
+}
+
+.tabledit-delete-button.btn.btn-sm.btn-default.waves-effect waves-light{
+    display: none;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+    /*background: slategray;*/
+    background-color: #1c2331;
+    opacity: 0.7;
+}
+
+a{
+    /*color:#880e4f;*/
+    color: #1c2331;
+}
+

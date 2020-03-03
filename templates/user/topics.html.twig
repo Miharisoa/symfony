@@ -1,0 +1,186 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container my-5">
+        {% if errors|default(null) %}
+        <p class="alert alert-danger">
+            {% for error in errors %}
+                <span class="py-5">{{ error }}</span>
+            {% endfor %}
+        </p>
+        {% else %}
+
+        {% for message in app.flashes('failed') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <form action="" method="POST">
+            <div class="row mb-4 d-flex align-items-center">
+                <div class="col-md-5 mb-2">
+                    <input type="text" class="form-control" placeholder="Author name" name="author">
+                </div>
+
+                <div class="col-md-5 mb-2">
+                    <input type="text" class="form-control" placeholder="Topic title" name="topicTitle">
+                </div>
+
+                <div class="col mb-2">
+                    <button class="btn btn-dark btn-md" type="submit">Search</button>
+                </div>
+
+            </div>
+
+        </form>
+
+        <a href="{{ path('topics',{'page':1}) }}"><h3 class="font-weight-bold text-center mb-5">All topics</h3></a>
+
+        {% for topic in topics %}
+        <!--Section: Block Content-->
+        <section class="dark-grey-text mb-4 card px-5 pt-3">
+
+            <!-- Section heading -->
+
+            <div class="media mb-2">
+                <img class="card-img-100 rounded-circle z-depth-1-half d-flex mr-3"
+                     src="{{ asset('uploads/photos/') }}{{ topic.utilisateurId.image }}" alt="Generic placeholder image">
+                <div class="media-body">
+                    <a onmouseover="seen('{{ topic.id }}');">
+                        <h5 class="user-name font-weight-bold">{{ topic.titre }}</h5>
+                    </a>
+
+                    <div class="card-data">
+                        <ul class="list-unstyled mb-1">
+                            {#<li class="comment-date font-small grey-text">#}
+                                {#<i class="fa fa-calendar"></i> 05/10/2015#}
+                            {#</li>#}
+                            <li class="comment-date font-small grey-text">
+                                <i class="fa fa-pencil"></i> By {{ topic.utilisateurId.pseudo }}
+                            </li>
+
+                            <li class="comment-date font-small grey-text">
+                                <a onclick="setCollapse('{{ loop.index }}')" data-toggle="collapse" href="#collapse{{ loop.index }}" role="button">
+                                    <i class="fa fa-eye"></i> Seen by <b>{{ topic.utilisateurVuTopics|length }}</b> users
+                                </a>
+                                <div id="collapse{{ loop.index }}">
+                                    {% for item in topic.utilisateurVuTopics %}
+                                        {{ item.utilisateurId.prenom }} {{ item.utilisateurId.nom }} <br>
+                                    {% endfor %}
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <p class="dark-grey-text article">
+                        <button class="btn btn-unique btn-sm pull-right">Add a comment</button>
+                    </p>
+                </div>
+            </div>
+
+
+        </section>
+        <!--Section: Block Content-->
+        {% endfor %}
+
+
+
+        <div class="row">
+            {% if recherche < 1 %}
+            <div class="row">
+                {% if pagination.nbPages > 0 %}
+                    <ul class="pagination pagination-circle>
+                        {% if pagination.page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': 1})) }}">
+                                    <i class="fa fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path(pagination.nomRoute,
+                                    pagination.paramsRoute|merge({'page': pagination.page-1})) }}">
+                                    &nbsp; <i class="fa fa-angle-left"></i> &nbsp;
+                                </a>
+                            </li>
+                        {% endif %}
+
+                    {# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nbPages #}
+                    {% for p in range(max(pagination.page-4, 1), min(pagination.page+4, pagination.nbPages)) %}
+                        <li {% if p == pagination.page %}class="active"{% endif %} class="page-item">
+                            <a class="page-link"
+                               href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': p})) }}">
+                                {{ p }}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {% if pagination.page < pagination.nbPages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path(pagination.nomRoute,
+                                pagination.paramsRoute|merge({'page': pagination.page+1})) }}">
+                                &nbsp;<i class="fa fa-angle-right"></i>&nbsp;
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path(pagination.nomRoute,
+                                pagination.paramsRoute|merge({'page': pagination.nbPages})) }}">
+                                <i class="fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    </ul>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+        $("div[id^='collapse']").hide();
+
+        function seen(id_topic) {
+
+            $.ajax({
+                url: '/savetopic',
+                data: {id_topic: id_topic},
+                type: 'POST',
+                success: function (response) {
+                    console.log(response.seen);
+                }
+            });
+
+        }
+
+        function setCollapse(numero) {
+            var elem = $('#collapse'+numero);
+            if (elem.is(":hidden")) {
+                elem.show();
+            } else {
+                elem.hide();
+            }
+        }
+    </script>
+
+{% endblock %}
